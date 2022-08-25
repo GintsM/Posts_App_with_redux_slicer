@@ -1,9 +1,6 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 
-const initialState = [
-  { id: '1', title: 'First Post!', content: 'Hello!', reactions: { thumbsUp: '0', hooray: '0', heart: '0', rocket: '0', eyes: '0' } },
-  { id: '2', title: 'Second Post', content: 'More text', reactions: { thumbsUp: '0', hooray: '0', heart: '0', rocket: '0', eyes: '0' } }
-]
+const initialState = [];
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -49,3 +46,9 @@ const postsSlice = createSlice({
 export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions
 
 export default postsSlice.reducer
+
+export const selectAllPosts = state => state.posts
+
+export const selectPostById = (state, postId) =>
+  state.posts.find(post => post.id === postId)
+export const selectUser = state => state.users

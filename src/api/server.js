@@ -2,7 +2,7 @@
 
 import { Server, Model, Factory, hasMany, RestSerializer } from 'miragejs'
 
-import faker from 'faker'
+// import faker from 'faker'
 import seedrandom from 'seedrandom'
 
 const IdSerializer = RestSerializer.extend({
@@ -30,7 +30,7 @@ if (useSeededRNG) {
   }
 
   rng = seedrandom(randomSeedString)
-  faker.seed(seedDate.getTime())
+  // faker.seed(seedDate.getTime())
 }
 
 function getRandomInt(min, max) {
