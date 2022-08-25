@@ -2,13 +2,12 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import { PostAuthor } from './PostAuthor'
+import { selectPostById } from './postsSlice'
 
 export const SinglePostPage = () => {
   const { postId } = useParams()
 
-  const post = useSelector(state =>
-    state.posts.find(post => post.id === postId)
-  )
+  const post = useSelector(state => selectPostById(state, postId))
 
   if (!post) {
     return (

@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { postUpdated, selectPostById } from './postsSlice'
 
 export const EditPostForm = () => {
-  const { postId } = useParams(selectPostById)
+  const { postId } = useParams()
 
-  const post = useSelector()
+  const post = useSelector(state => selectPostById(state, postId))
 
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
