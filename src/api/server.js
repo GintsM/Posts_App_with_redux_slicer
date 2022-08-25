@@ -11,7 +11,7 @@ import { parseISO } from 'date-fns'
 
 const NUM_USERS = 3 // don't change - limited amount to 3 check usersSeed to add more if neccesary
 const POSTS_PER_USER = 3
-const RECENT_NOTIFICATIONS_DAYS = 7
+// const RECENT_NOTIFICATIONS_DAYS = 7
 
 // Add an extra delay to all endpoints, so loading spinners show up.
 const ARTIFICIAL_DELAY_MS = 2000
@@ -318,7 +318,8 @@ function generateRandomNotifications(since, numNotifications, db) {
     const template = randomFromArray(notificationTemplates)
     return {
       id: nanoid(),
-      date: faker.date.between(pastDate, now).toISOString(),
+      // TODO must replace faker with proper data
+      // date: faker.date.between(pastDate, now).toISOString(), 
       message: template,
       user: user.id,
     }
