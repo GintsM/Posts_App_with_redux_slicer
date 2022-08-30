@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { nanoid } from '@reduxjs/toolkit'
 
 import { reactionAdded } from './postsSlice'
 
@@ -17,7 +18,7 @@ export const ReactionButtons = ({ post }) => {
   const reaction = Object.entries(reactionEmoji).map(([key, value]) => {
     return (
       <button
-        key={key}
+        key={nanoid}
         type="button"
         className="muted-button reaction-button"
         onClick={() =>

@@ -8,10 +8,8 @@ const initialState = {
 }
 
 
-
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const response = await client.get('/fakeApi/posts')
-  console.log('hey hey hey')
   return response.data
 })
 
@@ -62,7 +60,8 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded'
         // Add any fetched posts to the array
-        state.posts = state.posts.concat(action.payload)
+        state.posts = action.payload
+
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed'

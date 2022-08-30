@@ -150,7 +150,7 @@ for (let i = 0; i < NUM_USERS; i++) {
 
 const serializePost = (post) => ({
   ...post,
-  user: post.user.id,
+  user: post.user.firstName,
 })
 
 /* MSW REST API Handlers */
@@ -161,7 +161,7 @@ export const handlers = [
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(posts))
   }),
   rest.post('/fakeApi/posts', function (req, res, ctx) {
-    const data = req.body
+    const data = req.json() // TODO must to change body is depraceted
 
     if (data.content === 'error') {
       return res(
@@ -187,7 +187,7 @@ export const handlers = [
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePost(post)))
   }),
   rest.patch('/fakeApi/posts/:postId', (req, res, ctx) => {
-    const { id, ...data } = req.body
+    const { id, ...data } = req.json()
     const updatedPost = db.post.update({
       where: { id: { equals: req.params.postId } },
       data,

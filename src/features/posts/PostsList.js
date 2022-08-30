@@ -13,7 +13,7 @@ const PostExcerpt = ({ post }) => {
       <div>
         <PostAuthor userId={post.user} />
       </div>
-      <p className="post-content">{post.content.substring(0, 100)}</p>
+      <p className="post-content">{post.content}</p>
       <ReactionButtons post={post} />
       <Link to={`/posts/${post.id}`} className="button muted-button">
         View Post
@@ -24,13 +24,13 @@ const PostExcerpt = ({ post }) => {
 
 export const PostsList = () => {
   const posts = useSelector(selectAllPosts)
+  console.log(posts, 'posts')
   const dispatch = useDispatch()
 
   const postStatus = useSelector(state => state.posts.status)
   const error = useSelector(state => state.posts.error)
 
   useEffect(() => {
-    console.log('before dispatch', postStatus)
     if (postStatus === 'idle') {
       dispatch(fetchPosts())
     }
@@ -45,6 +45,7 @@ export const PostsList = () => {
     // const orderedPosts = posts
     //   .slice()
     //   .sort((a, b) => b.date.localeCompare(a.date))// TODO must to check this
+    // console.log(content, 'content')
 
     content = posts.map(post => (
       <PostExcerpt key={post.id} post={post} />
