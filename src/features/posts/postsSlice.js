@@ -1,4 +1,4 @@
-import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 
 const initialState = {
@@ -12,6 +12,17 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const response = await client.get('/fakeApi/posts')
   return response.data
 })
+
+export const addNewPost = createAsyncThunk(
+  'posts/addNewPost',
+  // The payload creator receives the partial `{title, content, user}` object
+  async initialPost => {
+    // We send the initial data to the fake API server
+    const response = await client.post('/fakeApi/posts', initialPost)
+    // The response includes the complete post object, including unique ID
+    return response.data
+  }
+)
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -27,22 +38,21 @@ const postsSlice = createSlice({
     // postAdded(state, action) {
     //   state.push(action.payload)
     // },
-    postAdded: {
-      reducer(state, action) {
-        state.posts.push(action.payload)
-      },
-      prepare(title, content, userID) {
-        return {
-          payload: {
-            id: nanoid(),
-            title,
-            content,
-            user: userID,
-            reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 }
-          }
-        }
-      }
-    },
+    // postAdded: {
+    //   reducer(state, action) {
+    //     state.posts.push(action.payload)
+    //   },
+    //   prepare(title, content, userID) {
+    //     return {
+    //       payload: {
+    //         title,
+    //         content,
+    //         user: userID,
+    //         reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 }
+    //       }
+    //     }
+    //   }
+    // },
     postUpdated(state, action) {
       const { id, title, content } = action.payload
       const existingPost = state.posts.find(post => post.id === id)
@@ -66,6 +76,11 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        // We can directly add the new post object to our posts array
+        // state.posts.push(action.payload)
+        console.log('hey from here')
       })
   }
 })

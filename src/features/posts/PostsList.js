@@ -11,7 +11,7 @@ const PostExcerpt = ({ post }) => {
     <article className="post-excerpt" >
       <h3>{post.title}</h3>
       <div>
-        <PostAuthor userId={post.user} />
+        <PostAuthor userId={post.user.id} />
       </div>
       <p className="post-content">{post.content}</p>
       <ReactionButtons post={post} />
@@ -24,7 +24,7 @@ const PostExcerpt = ({ post }) => {
 
 export const PostsList = () => {
   const posts = useSelector(selectAllPosts)
-  console.log(posts, 'posts')
+  // console.log(posts, 'posts')
   const dispatch = useDispatch()
 
   const postStatus = useSelector(state => state.posts.status)
