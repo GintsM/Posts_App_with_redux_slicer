@@ -1,3 +1,5 @@
+// those is just examples and they do nothing in application
+
 export const sayHiOnDispatch = (createStore) => {
   return (rootReducer, preloadedState, enhancers) => {
     const store = createStore(rootReducer, preloadedState, enhancers)

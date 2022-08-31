@@ -22,7 +22,13 @@ export async function client(endpoint, { body, ...customConfig } = {}) {
     const response = await window.fetch(endpoint, config)
     data = await response.json()
     if (response.ok) {
-      return data
+      // Return a result object similar to Axios
+      return {
+        status: response.status,
+        data,
+        headers: response.headers,
+        url: response.url,
+      }
     }
     throw new Error(response.statusText)
   } catch (err) {
