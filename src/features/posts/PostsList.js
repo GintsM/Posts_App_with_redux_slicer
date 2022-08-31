@@ -5,10 +5,11 @@ import { PostAuthor } from './PostAuthor'
 import { ReactionButtons } from './ReactionButtons'
 import { selectAllPosts, fetchPosts } from './postsSlice'
 import { Spinner } from '../../components/Spinner'
+import { nanoid } from '@reduxjs/toolkit'
 
 const PostExcerpt = ({ post }) => {
   return (
-    <article className="post-excerpt">
+    <article className="post-excerpt" >
       <h3>{post.title}</h3>
       <div>
         <PostAuthor userId={post.user} />
@@ -48,7 +49,7 @@ export const PostsList = () => {
     // console.log(content, 'content')
 
     content = posts.map(post => (
-      <PostExcerpt key={post.id} post={post} />
+      <PostExcerpt post={post} key={post.id} />
     ))
   } else if (postStatus === 'failed') {
     content = <div>This is error: {error}</div>

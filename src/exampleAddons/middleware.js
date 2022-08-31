@@ -1,3 +1,5 @@
+// those is just examples and they do nothing in application
+
 export const print1 = (storeAPI) => (next) => (action) => {
   console.log('1')
   return next(action)

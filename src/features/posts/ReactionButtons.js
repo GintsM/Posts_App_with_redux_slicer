@@ -16,9 +16,10 @@ export const ReactionButtons = ({ post }) => {
   const dispatch = useDispatch()
 
   const reaction = Object.entries(reactionEmoji).map(([key, value]) => {
+    const keyForElement = nanoid()
     return (
       <button
-        key={nanoid}
+        key={keyForElement}
         type="button"
         className="muted-button reaction-button"
         onClick={() =>
