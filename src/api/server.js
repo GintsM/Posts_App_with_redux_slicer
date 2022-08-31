@@ -58,7 +58,8 @@ const randomFromArray = (array) => {
 
 export const db = factory({
   user: {
-    id: primaryKey(nanoid),
+    // pk: primaryKey(nanoid),
+    id: primaryKey(String),
     firstName: String,
     lastName: String,
     name: String,
@@ -92,9 +93,9 @@ export const db = factory({
 })
 
 const usersSeed = [
-  { firstName: 'akbar (Aku)', lastName: 'Khan', username: 'Aku' },
-  { firstName: 'Gints', lastName: 'Misins', username: 'GintsM' },
-  { firstName: 'Zachee', lastName: 'Ishimwe', username: 'Zacheee' }
+  { id: nanoid(), firstName: 'akbar (Aku)', lastName: 'Khan', username: 'Aku' },
+  { id: nanoid(), firstName: 'Gints', lastName: 'Misins', username: 'GintsM' },
+  { id: nanoid(), firstName: 'Zachee', lastName: 'Ishimwe', username: 'Zacheee' }
 ]
 
 const createUserData = (index) => {
@@ -102,6 +103,7 @@ const createUserData = (index) => {
   const lastName = usersSeed[index].lastName
 
   return {
+    id: usersSeed[index].id,
     firstName,
     lastName,
     name: `${firstName} ${lastName}`,
@@ -150,7 +152,7 @@ for (let i = 0; i < NUM_USERS; i++) {
 
 const serializePost = (post) => ({
   ...post,
-  user: post.user.firstName,
+  user: post.user.id,
 })
 
 /* MSW REST API Handlers */

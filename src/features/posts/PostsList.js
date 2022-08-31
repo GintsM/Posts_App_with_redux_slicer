@@ -5,7 +5,6 @@ import { PostAuthor } from './PostAuthor'
 import { ReactionButtons } from './ReactionButtons'
 import { selectAllPosts, fetchPosts } from './postsSlice'
 import { Spinner } from '../../components/Spinner'
-import { nanoid } from '@reduxjs/toolkit'
 
 const PostExcerpt = ({ post }) => {
   return (
