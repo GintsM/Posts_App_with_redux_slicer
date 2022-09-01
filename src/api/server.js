@@ -85,7 +85,7 @@ const lorem = new LoremIpsum({
   }
 });
 
-const createPostData = (user) => { // TODO replace post data with lorem
+const createPostData = (user) => {
   function getRandomDate(startDate, endDate) {
     const minValue = startDate.getTime();
     const maxValue = endDate.getTime();
@@ -136,25 +136,24 @@ export const handlers = [
       )
     }
 
-    data.date = new Date().toISOString()
+    const createPostFromData = (post) => {
+      const userFromPost = usersSeed.find((user) => user.id === post.id) // find out from usersSeed
 
-    // const user = db.user.findFirst({ where: { id: { equals: data.user } } })
-    // data.user = req.id
-    let arr = {}
+      return {
+        title: post.title,
+        date: new Date().toISOString(),//DONE
+        user: userFromPost,
+        content: post.content,
+        reactions: db.reaction.create(),//DONE
+      }
+    }
+
     data.then((result) => {
-      return arr = { ...result }
+      db.post.create(createPostFromData(result))
     }
     )
-    console.log(arr, "Array")
-    // data.user = 
 
-    data.reactions = db.reaction.create()
-
-    const post = db.post.create(data)
-
-
-
-    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePost(post)))
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json('Great'))
   }),
   rest.get('/fakeApi/posts/:postId', function (req, res, ctx) {
     const post = db.post.findFirst({
