@@ -5,6 +5,7 @@
 html {
   height: 100%;
 }
+
 body {
   height: 100vh;
   min-height: 100vh;
@@ -71,6 +72,22 @@ nav section {
   color: white;
 }
 
+.navlinks {
+  color: #b83f45;
+}
+
+.navLinks>a {
+  width: 50px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background-color: #82719d;
+  font-size: 20px;
+  color: #eadcdd;
+  font-weight: bold;
+
+  /* adjusted color */
+}
+
 /* Main content */
 
 section {
@@ -107,31 +124,21 @@ button:disabled:hover {
   height: 5em;
   border-radius: 50%;
   background: var(--redux-color);
-  background: -moz-linear-gradient(
-    left,
-    var(--redux-color) 10%,
-    rgba(128, 0, 255, 0) 42%
-  );
-  background: -webkit-linear-gradient(
-    left,
-    var(--redux-color) 10%,
-    rgba(128, 0, 255, 0) 42%
-  );
-  background: -o-linear-gradient(
-    left,
-    var(--redux-color) 10%,
-    rgba(128, 0, 255, 0) 42%
-  );
-  background: -ms-linear-gradient(
-    left,
-    var(--redux-color) 10%,
-    rgba(128, 0, 255, 0) 42%
-  );
-  background: linear-gradient(
-    to right,
-    var(--redux-color) 10%,
-    rgba(128, 0, 255, 0) 42%
-  );
+  background: -moz-linear-gradient(left,
+      var(--redux-color) 10%,
+      rgba(128, 0, 255, 0) 42%);
+  background: -webkit-linear-gradient(left,
+      var(--redux-color) 10%,
+      rgba(128, 0, 255, 0) 42%);
+  background: -o-linear-gradient(left,
+      var(--redux-color) 10%,
+      rgba(128, 0, 255, 0) 42%);
+  background: -ms-linear-gradient(left,
+      var(--redux-color) 10%,
+      rgba(128, 0, 255, 0) 42%);
+  background: linear-gradient(to right,
+      var(--redux-color) 10%,
+      rgba(128, 0, 255, 0) 42%);
   position: relative;
   -webkit-animation: load3 1.4s infinite linear;
   animation: load3 1.4s infinite linear;
@@ -170,6 +177,7 @@ button:disabled:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
@@ -181,6 +189,7 @@ button:disabled:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
@@ -298,7 +307,7 @@ main h2 {
   margin: 0;
 }
 
-.toggle-all:checked + label:before {
+.toggle-all:checked+label:before {
   color: #737373;
 }
 
@@ -350,7 +359,8 @@ ul.todo-list {
   top: 0;
   bottom: 0;
   margin: auto 0;
-  border: none; /* Mobile Safari */
+  border: none;
+  /* Mobile Safari */
   -webkit-appearance: none;
   appearance: none;
 }
@@ -359,7 +369,7 @@ ul.todo-list {
   opacity: 0;
 }
 
-.todo-list li .toggle + .todo-text {
+.todo-list li .toggle+.todo-text {
   /*
 		Firefox requires `#` to be escaped - https://bugzilla.mozilla.org/show_bug.cgi?id=922433
 		IE and Edge requires *everything* to be escaped to render, so we do that instead of just the `#` - https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7157459/
@@ -369,7 +379,7 @@ ul.todo-list {
   background-position: center left;
 }
 
-.todo-list li .toggle:checked + .todo-text {
+.todo-list li .toggle:checked+.todo-text {
   background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E');
 }
 
@@ -544,6 +554,7 @@ ul.todo-list {
 	Can't use it globally since it destroys checkboxes in Firefox
 */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
+
   .toggle-all,
   .todo-list li .toggle {
     background: none;
