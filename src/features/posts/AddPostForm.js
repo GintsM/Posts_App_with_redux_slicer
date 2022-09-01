@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { postAdded, selectUser } from './postsSlice'
+import { addNewPost, selectUser } from './postsSlice'
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [userId, setUserId] = useState('')
+  const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
   const dispatch = useDispatch()
 
@@ -16,24 +17,27 @@ export const AddPostForm = () => {
   const onContentChanged = e => setContent(e.target.value)
   const onAuthorChanged = e => setUserId(e.target.value)
 
-  const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postAdded(title, content, userId))
-      // dispatch(
-      //   postAdded({
-      //     id: nanoid(),
-      //     title,
-      //     content
-      //   })
-      // )
+  const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
 
-      setTitle('')
-      setContent('')
+  const onSavePostClicked = () => {
+    if (canSave) {
+      try {
+        setAddRequestStatus('pending')
+        dispatch(addNewPost({ title, content, user: userId })).unwrap()
+        // unwrap will return action.payload value from a fulfilled action, or throws an error if it's the rejected action
+        setTitle('')
+        setContent('')
+        setUserId('')
+      } catch (err) {
+        console.error('Failed to save the post: ', err)
+      } finally {
+        setAddRequestStatus('idle')
+      }
     }
   }
 
 
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+  // const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
 
   const usersOptions = users.map(user => (
     <option key={user.id} value={user.id}>

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App'
 import { Provider } from 'react-redux';
 import store from './store'
+import { fetchUsers } from './features/users/usersSlice'
 
 import { worker } from './api/server'
 
@@ -15,6 +16,8 @@ if (process.env.NODE_ENV === 'development') {
   worker.start()
 
 }
+
+store.dispatch(fetchUsers())
 
 // Wrap app rendering so we can wait for the mock API to initialize
 // async function start() {

@@ -16,49 +16,13 @@ const POSTS_PER_USER = 3
 // Add an extra delay to all endpoints, so loading spinners show up.
 const ARTIFICIAL_DELAY_MS = 2000
 
-/* RNG setup */
-
-// Set up a seeded random number generator, so that we get
-// a consistent set of users / entries each time the page loads.
-// This can be reset by deleting this localStorage value,
-// or turned off by setting `useSeededRNG` to false.
-let useSeededRNG = true
-
-let rng = seedrandom()
-
-if (useSeededRNG) {
-  let randomSeedString = localStorage.getItem('randomTimestampSeed')
-  let seedDate
-
-  if (randomSeedString) {
-    seedDate = new Date(randomSeedString)
-  } else {
-    seedDate = new Date()
-    randomSeedString = seedDate.toISOString()
-    localStorage.setItem('randomTimestampSeed', randomSeedString)
-  }
-
-  rng = seedrandom(randomSeedString)
-  setRandom(rng)
-  // faker.seed(seedDate.getTime())
-}
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(rng() * (max - min + 1)) + min
-}
-
-const randomFromArray = (array) => {
-  const index = getRandomInt(0, array.length - 1)
-  return array[index]
-}
 
 /* MSW Data Model Setup */
 
 export const db = factory({
   user: {
-    id: primaryKey(nanoid),
+    // pk: primaryKey(nanoid),
+    id: primaryKey(String),
     firstName: String,
     lastName: String,
     name: String,
@@ -92,9 +56,9 @@ export const db = factory({
 })
 
 const usersSeed = [
-  { firstName: 'akbar (Aku)', lastName: 'Khan', username: 'Aku' },
-  { firstName: 'Gints', lastName: 'Misins', username: 'GintsM' },
-  { firstName: 'Zachee', lastName: 'Ishimwe', username: 'Zacheee' }
+  { id: nanoid(), firstName: 'akbar (Aku)', lastName: 'Khan', username: 'Aku' },
+  { id: nanoid(), firstName: 'Gints', lastName: 'Misins', username: 'GintsM' },
+  { id: nanoid(), firstName: 'Zachee', lastName: 'Ishimwe', username: 'Zacheee' }
 ]
 
 const createUserData = (index) => {
@@ -102,6 +66,7 @@ const createUserData = (index) => {
   const lastName = usersSeed[index].lastName
 
   return {
+    id: usersSeed[index].id,
     firstName,
     lastName,
     name: `${firstName} ${lastName}`,
@@ -120,7 +85,7 @@ const lorem = new LoremIpsum({
   }
 });
 
-const createPostData = (user) => { // TODO replace post data with lorem
+const createPostData = (user) => {
   function getRandomDate(startDate, endDate) {
     const minValue = startDate.getTime();
     const maxValue = endDate.getTime();
@@ -150,7 +115,7 @@ for (let i = 0; i < NUM_USERS; i++) {
 
 const serializePost = (post) => ({
   ...post,
-  user: post.user.firstName,
+  // user: post.user.id,
 })
 
 /* MSW REST API Handlers */
@@ -160,8 +125,8 @@ export const handlers = [
     const posts = db.post.getAll().map(serializePost)
     return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(posts))
   }),
-  rest.post('/fakeApi/posts', function (req, res, ctx) {
-    const data = req.json() // TODO must to change body is depraceted
+  rest.post('/fakeApi/posts', (req, res, ctx) => {
+    const data = req.json() // changed req.body is depraceted
 
     if (data.content === 'error') {
       return res(
@@ -171,14 +136,24 @@ export const handlers = [
       )
     }
 
-    data.date = new Date().toISOString()
+    const createPostFromData = (post) => {
+      const userFromPost = usersSeed.find((user) => user.id === post.id) // find out from usersSeed
 
-    const user = db.user.findFirst({ where: { id: { equals: data.user } } })
-    data.user = user
-    data.reactions = db.reaction.create()
+      return {
+        title: post.title,
+        date: new Date().toISOString(),//DONE
+        user: userFromPost,
+        content: post.content,
+        reactions: db.reaction.create(),//DONE
+      }
+    }
 
-    const post = db.post.create(data)
-    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json(serializePost(post)))
+    data.then((result) => {
+      db.post.create(createPostFromData(result))
+    }
+    )
+
+    return res(ctx.delay(ARTIFICIAL_DELAY_MS), ctx.json('Great'))
   }),
   rest.get('/fakeApi/posts/:postId', function (req, res, ctx) {
     const post = db.post.findFirst({
@@ -231,7 +206,7 @@ export const handlers = [
     )
   }),
   rest.get('/fakeApi/notifications', (req, res, ctx) => {
-    const numNotifications = getRandomInt(1, 5)
+    const numNotifications = 2 // REPLACED getRandomInt(1, 5)
 
     let notifications = generateRandomNotifications(
       undefined,
@@ -248,6 +223,44 @@ export const handlers = [
 
 export const worker = setupWorker(...handlers)
 // worker.printHandlers() // Optional: nice for debugging to see all available route handlers that will be intercepted
+
+/* RNG setup for Notifications*/
+
+// Set up a seeded random number generator, so that we get
+// a consistent set of users / entries each time the page loads.
+// This can be reset by deleting this localStorage value,
+// or turned off by setting `useSeededRNG` to false.
+let useSeededRNG = false
+
+let rng = seedrandom()
+
+if (useSeededRNG) {
+  let randomSeedString = localStorage.getItem('randomTimestampSeed')
+  let seedDate
+
+  if (randomSeedString) {
+    seedDate = new Date(randomSeedString)
+  } else {
+    seedDate = new Date()
+    randomSeedString = seedDate.toISOString()
+    localStorage.setItem('randomTimestampSeed', randomSeedString)
+  }
+
+  rng = seedrandom(randomSeedString)
+  setRandom(rng)
+  // faker.seed(seedDate.getTime())
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(rng() * (max - min + 1)) + min
+}
+
+const randomFromArray = (array) => {
+  const index = getRandomInt(0, array.length - 1)
+  return array[index]
+}
 
 /* Mock Websocket Setup */
 
