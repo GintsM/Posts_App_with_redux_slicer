@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { PostAuthor } from './PostAuthor'
+import { MemoAuthor } from './PostAuthor'
 import { ReactionButtons } from './ReactionButtons'
 import { selectAllPosts, fetchPosts } from './postsSlice'
 import { Spinner } from '../../components/Spinner'
 
 const PostExcerpt = ({ post }) => {
+  console.log("hey from PostExcerpt")
   return (
     <article className="post-excerpt" >
       <h3>{post.title}</h3>
       <div>
-        <PostAuthor userId={post.user.id} />
+        <MemoAuthor userId={post.user.id} />
       </div>
       <p className="post-content">{post.content}</p>
       <ReactionButtons post={post} />
       <Link to={`/posts/${post.id}`} className="button muted-button">
-        View Post
+        View Post Post id={post.id}
       </Link>
     </article>
   )
@@ -30,10 +31,13 @@ export const PostsList = () => {
   const postStatus = useSelector(state => state.posts.status)
   const error = useSelector(state => state.posts.error)
 
+  console.log("hey from PostList")
+
   useEffect(() => {
     if (postStatus === 'idle') {
       dispatch(fetchPosts())
     }
+    console.log("hey from UseEffect")
   }, [postStatus, dispatch])
 
   let content

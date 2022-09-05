@@ -8,3 +8,5 @@ export const PostAuthor = ({ userId }) => {
 
   return <span>by {author ? author.name : 'Unknown author'}</span>
 }
+
+export const MemoAuthor = React.memo(PostAuthor)
