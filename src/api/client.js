@@ -41,5 +41,6 @@ client.get = function (endpoint, customConfig = {}) {
 }
 
 client.post = function (endpoint, body, customConfig = {}) {
+  console.log(" Body from %c Client", "color:red; font-style:bold;", body)
   return client(endpoint, { ...customConfig, body })
 }

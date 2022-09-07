@@ -6,22 +6,25 @@ import { ReactionButtons } from './ReactionButtons'
 import { selectAllPosts, fetchPosts } from './postsSlice'
 import { Spinner } from '../../components/Spinner'
 
-const PostExcerpt = ({ post }) => {
+let PostExcerpt = ({ post }) => {
   console.log("hey from PostExcerpt")
+  const shortVers = post.content.substring(0, 100)
   return (
     <article className="post-excerpt" >
       <h3>{post.title}</h3>
       <div>
         <MemoAuthor userId={post.user.id} />
       </div>
-      <p className="post-content">{post.content}</p>
+      <p className="post-content">{shortVers}</p>
       <ReactionButtons post={post} />
       <Link to={`/posts/${post.id}`} className="button muted-button">
-        View Post Post id={post.id}
+        View Post Post
       </Link>
     </article>
   )
 }
+
+PostExcerpt = React.memo(PostExcerpt)
 
 export const PostsList = () => {
   const posts = useSelector(selectAllPosts)
@@ -31,13 +34,24 @@ export const PostsList = () => {
   const postStatus = useSelector(state => state.posts.status)
   const error = useSelector(state => state.posts.error)
 
-  console.log("hey from PostList")
+  console.group("Hi to %cZachee", " color:red; font: small-caps bold 24px/1 sans-serif;")
+  console.log("This is Zachee's greeting")
+
+  console.group("Hi to %cAku", " color:green; font: bold 24px/1 sans-serif; background:grey")
+  console.log("This is Aku's greeting")
+  console.groupEnd()
+  console.groupEnd()
+
+  console.group("Hi to %cMeri", " color:yellow; font: bold 24px/1 sans-serif; background:blue")
+  console.log("This is %cMeri's greeting", " color:yellow; font: bold 24px/1 sans-serif; background:blue")
+  console.groupEnd()
 
   useEffect(() => {
     if (postStatus === 'idle') {
       dispatch(fetchPosts())
+    } else {
+      console.log("hey from UseEffect")
     }
-    console.log("hey from UseEffect")
   }, [postStatus, dispatch])
 
   let content
