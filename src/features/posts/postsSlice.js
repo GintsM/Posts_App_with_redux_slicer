@@ -80,6 +80,7 @@ const postsSlice = createSlice({
       .addCase(addNewPost.fulfilled, (state, action) => {
         // We can directly add the new post object to our posts array
         // state.posts.push(action.payload)
+        state.status = 'idle'
         console.log('hey from here')
       })
   }

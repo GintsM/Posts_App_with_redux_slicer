@@ -7,7 +7,6 @@ import { selectAllPosts, fetchPosts } from './postsSlice'
 import { Spinner } from '../../components/Spinner'
 
 let PostExcerpt = ({ post }) => {
-  console.log("hey from PostExcerpt")
   const shortVers = post.content.substring(0, 100)
   return (
     <article className="post-excerpt" >
@@ -35,16 +34,9 @@ export const PostsList = () => {
   const error = useSelector(state => state.posts.error)
 
   console.group("Hi to %cZachee", " color:red; font: small-caps bold 24px/1 sans-serif;")
-  console.log("This is Zachee's greeting")
-
-  console.group("Hi to %cAku", " color:green; font: bold 24px/1 sans-serif; background:grey")
-  console.log("This is Aku's greeting")
-  console.groupEnd()
+  console.log(posts, "This is Zachee's greeting")
   console.groupEnd()
 
-  console.group("Hi to %cMeri", " color:yellow; font: bold 24px/1 sans-serif; background:blue")
-  console.log("This is %cMeri's greeting", " color:yellow; font: bold 24px/1 sans-serif; background:blue")
-  console.groupEnd()
 
   useEffect(() => {
     if (postStatus === 'idle') {

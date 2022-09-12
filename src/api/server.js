@@ -107,9 +107,14 @@ const createPostData = (user) => {
 for (let i = 0; i < NUM_USERS; i++) {
   const author = db.user.create(createUserData(i)) // TODO pass users in createUserData
 
+
   for (let j = 0; j < POSTS_PER_USER; j++) {
+
     const newPost = createPostData(author)
     db.post.create(newPost)
+    if (i === 2 && j === 2) {
+      console.log(author, "Author from creat")
+    }
   }
 }
 
@@ -137,12 +142,12 @@ export const handlers = [
     }
 
     const createPostFromData = (post) => {
-      const userFromPost = usersSeed.find((user) => user.id === post.id) // find out from usersSeed
+      const userFromDb = db.user.getAll().find((user) => user.id === post.user)
 
       return {
         title: post.title,
         date: new Date().toISOString(),//DONE
-        user: userFromPost,
+        user: userFromDb,
         content: post.content,
         reactions: db.reaction.create(),//DONE
       }
