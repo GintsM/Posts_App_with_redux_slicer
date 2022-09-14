@@ -4,13 +4,13 @@ import { nanoid } from '@reduxjs/toolkit'
 // import faker from 'faker'
 import seedrandom from 'seedrandom'
 import { Server as MockSocketServer } from 'mock-socket'
-import { setRandom } from 'txtgen'
+import { sentence } from 'txtgen'
 import { LoremIpsum } from "lorem-ipsum";
 
 import { parseISO } from 'date-fns'
 
 const NUM_USERS = 3 // don't change - limited amount to 3 check usersSeed to add more if neccesary
-const POSTS_PER_USER = 3
+const POSTS_PER_USER = 2
 // const RECENT_NOTIFICATIONS_DAYS = 7
 
 // Add an extra delay to all endpoints, so loading spinners show up.
@@ -143,6 +143,7 @@ export const handlers = [
 
     const createPostFromData = (post) => {
       const userFromDb = db.user.getAll().find((user) => user.id === post.user)
+      console.log(sentence, "this is sent")
 
       return {
         title: post.title,
@@ -252,7 +253,7 @@ if (useSeededRNG) {
   }
 
   rng = seedrandom(randomSeedString)
-  setRandom(rng)
+  // setRandom(rng)
   // faker.seed(seedDate.getTime())
 }
 

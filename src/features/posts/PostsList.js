@@ -12,7 +12,7 @@ let PostExcerpt = ({ post }) => {
     <article className="post-excerpt" >
       <h3>{post.title}</h3>
       <div>
-        <MemoAuthor userId={post.user.id} />
+        <MemoAuthor userId={post.user} />
       </div>
       <p className="post-content">{shortVers}</p>
       <ReactionButtons post={post} />
